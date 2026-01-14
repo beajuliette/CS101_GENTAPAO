@@ -1,0 +1,242 @@
+---
+title: "RWORKSHEET_GENTAPAO#3B"
+author: "BEA JULIETTE L. GENTAPAO"
+date: "2025-10-13"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+# Data Frames and Data Manipulation
+
+## 1. Create a data frame from the household table
+
+### a. Write the codes
+
+```{r create-dataframe}
+# Create the household data frame
+household_data <- data.frame(
+  Respondents = c(1:20),
+  Sex = c(2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 1, 2),
+  Fathers_Occupation = c(1, 3, 3, 3, 1, 2, 3, 1, 1, 1, 3, 2, 1, 3, 3, 1, 3, 1, 2, 1),
+  Persons_at_Home = c(5, 7, 3, 8, 5, 9, 6, 7, 8, 4, 7, 5, 4, 7, 8, 8, 3, 11, 7, 6),
+  Siblings_at_School = c(6, 4, 4, 1, 2, 1, 5, 3, 1, 2, 3, 2, 5, 5, 2, 1, 2, 5, 3, 2),
+  Types_of_Houses = c(1, 2, 3, 1, 1, 3, 3, 1, 2, 3, 2, 3, 2, 2, 3, 3, 3, 3, 3, 2)
+)
+
+household_data
+```
+
+### b. Describe the data. Get the structure or summary
+
+```{r describe-data}
+# Get the structure of the data
+cat("Structure of the data:\n")
+str(household_data)
+
+cat("\n\nSummary of the data:\n")
+summary(household_data)
+```
+
+**Description:** The data frame contains 20 observations (respondents) and 6 variables. The variables include respondent number, sex (coded as integers), father's occupation (coded as integers), number of persons at home, number of siblings attending school, and type of house (coded as integers). All variables are numeric/integer type. The data represents household information from a survey.
+
+### c. Is the mean number of siblings attending is 5?
+
+```{r mean-siblings}
+mean_siblings <- mean(household_data$Siblings_at_School)
+cat("Mean number of siblings attending school:", mean_siblings, "\n")
+
+if (mean_siblings == 5) {
+  cat("Yes, the mean is 5.")
+} else {
+  cat("No, the mean is not 5. It is", mean_siblings)
+}
+```
+
+### d. Extract the 1st two rows and all columns
+
+```{r extract-first-two-rows}
+first_two_rows <- household_data[1:2, ]
+first_two_rows
+```
+
+### e. Extract 3rd and 5th row with 2nd and 4th column
+
+```{r extract-rows-cols}
+extracted_data <- household_data[c(3, 5), c(2, 4)]
+extracted_data
+```
+
+### f. Select the variable types of houses and store as types_houses
+
+```{r types-houses}
+types_houses <- household_data$Types_of_Houses
+types_houses
+```
+
+### g. Select only all Males respondents whose father occupation was farmer
+
+```{r male-farmers}
+# Male = 1, Farmer = 1
+male_farmers <- household_data[household_data$Sex == 1 & 
+                               household_data$Fathers_Occupation == 1, ]
+male_farmers
+```
+
+### h. Select only all females with >= 5 siblings attending school
+
+```{r female-five-siblings}
+# Female = 2, Siblings >= 5
+female_five_siblings <- household_data[household_data$Sex == 2 & 
+                                       household_data$Siblings_at_School >= 5, ]
+female_five_siblings
+```
+
+\newpage
+
+## 2. Create an empty data frame
+
+```{r empty-dataframe}
+df = data.frame(
+  Ints = integer(),
+  Doubles = double(), 
+  Characters = character(),
+  Logicals = logical(),
+  Factors = factor(),
+  stringsAsFactors = FALSE
+)
+
+print("Structure of the empty dataframe:")
+print(str(df))
+```
+
+**Description of results:** The output shows an empty data frame with 0 observations (rows) but with 5 defined variables (columns). Each column has a specific data type: `Ints` for integers, `Doubles` for numeric decimal values, `Characters` for text strings, `Logicals` for TRUE/FALSE values, and `Factors` for categorical data. Although the structure is defined, there is no actual data stored in the data frame yet.
+
+\newpage
+
+## 3. Working with CSV files
+
+### Create and save HouseholdData.csv
+
+```{r create-csv}
+# Create the household data
+household_csv_data <- data.frame(
+  Respondents = c(1:20),
+  Sex = c("Male", "Female", "Female", "Male", "Male", "Male", "Female", 
+          "Female", "Male", "Female", "Male", "Female", "Male", "Female", 
+          "Male", "Male", "Male", "Female", "Male", "Female"),
+  Fathers_Occupation = c("Farmer", "Others", "Others", "Others", "Farmer", 
+                         "Driver", "Others", "Farmer", "Farmer", "Farmer",
+                         "Others", "Driver", "Farmer", "Others", "Others",
+                         "Farmer", "Others", "Farmer", "Driver", "Farmer"),
+  Persons_at_Home = c(5, 7, 3, 8, 5, 9, 6, 7, 8, 4, 7, 5, 4, 7, 8, 8, 3, 11, 7, 6),
+  Siblings_at_School = c(6, 4, 4, 1, 2, 1, 5, 3, 1, 2, 3, 2, 5, 5, 2, 1, 2, 5, 3, 2),
+  Types_of_Houses = c("Wood", "Congrete", "Semi-Congrete", "Wood", "Wood",
+                      "Semi-Congrete", "Semi-Congrete", "Wood", "Congrete",
+                      "Semi-Congrete", "Congrete", "Semi-Congrete", "Congrete",
+                      "Congrete", "Semi-Congrete", "Semi-Congrete", "Semi-Congrete",
+                      "Semi-Congrete", "Semi-Congrete", "Congrete")
+)
+
+# Save to CSV
+write.csv(household_csv_data, file = "HouseholdData.csv", row.names = FALSE)
+cat("CSV file created successfully!\n")
+```
+
+### a. Import the CSV file into R environment
+
+```{r import-csv}
+household_imported <- read.csv("HouseholdData.csv")
+head(household_imported)
+```
+
+### b. Convert Sex into factor and change to integer
+
+```{r convert-sex}
+household_imported$Sex <- factor(household_imported$Sex, 
+                                 levels = c("Male", "Female"),
+                                 labels = c(1, 2))
+household_imported$Sex <- as.integer(household_imported$Sex)
+
+cat("Sex converted to integer:\n")
+head(household_imported)
+```
+
+### c. Convert Type of Houses into factor and change to integer
+
+```{r convert-houses}
+household_imported$Types_of_Houses <- factor(household_imported$Types_of_Houses,
+                                             levels = c("Wood", "Congrete", 
+                                                       "Semi-Congrete"),
+                                             labels = c(1, 2, 3))
+household_imported$Types_of_Houses <- as.integer(household_imported$Types_of_Houses)
+
+cat("Types of Houses converted to integer:\n")
+head(household_imported)
+```
+
+### d. Convert Father's Occupation into factor
+
+```{r convert-occupation}
+household_imported$Fathers_Occupation <- factor(household_imported$Fathers_Occupation,
+                                                levels = c("Farmer", "Driver", "Others"),
+                                                labels = c(1, 2, 3))
+household_imported$Fathers_Occupation <- as.integer(household_imported$Fathers_Occupation)
+
+cat("Father's Occupation converted to integer:\n")
+head(household_imported)
+str(household_imported)
+```
+
+### e. Select only females whose father's occupation is driver
+
+```{r female-driver}
+# Female = 2, Driver = 2
+female_driver <- household_imported[household_imported$Sex == 2 & 
+                                    household_imported$Fathers_Occupation == 2, ]
+cat("Female respondents with father as driver:\n")
+female_driver
+```
+
+### f. Select respondents with >= 5 siblings attending school
+
+```{r five-siblings}
+five_or_more_siblings <- household_imported[household_imported$Siblings_at_School >= 5, ]
+cat("Respondents with 5 or more siblings attending school:\n")
+five_or_more_siblings
+```
+
+\newpage
+
+## 4. Interpret the Graph
+
+```{r interpret-graph, echo=FALSE}
+cat("Graph Interpretation:\n\n")
+```
+
+.
+
