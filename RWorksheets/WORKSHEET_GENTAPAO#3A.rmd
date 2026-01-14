@@ -1,0 +1,229 @@
+---
+title: "RWORKSHEET_GENTAPAO#3A"
+author: "BEA JULIETTE L. GENTAPAO"
+date: "2025-10-13"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+# Using Vectors
+
+## 1. Working with LETTERS and letters vectors
+
+### a. Produce a vector that contains the first 11 letters
+
+```{r first-11-letters}
+first_11 <- LETTERS[1:11]
+first_11
+```
+
+### b. Produce a vector that contains the odd numbered letters
+
+```{r odd-numbered-letters}
+odd_letters <- LETTERS[seq(1, 26, by = 2)]
+odd_letters
+```
+
+### c. Produce a vector that contains the vowels
+
+```{r vowels}
+vowels <- LETTERS[c(1, 5, 9, 15, 21)]
+vowels
+```
+
+### d. Produce a vector that contains the last 5 lowercase letters
+
+```{r last-5-lowercase}
+last_5 <- letters[22:26]
+last_5
+```
+
+### e. Produce a vector that contains letters between 15 to 24 letters in lowercase
+
+```{r letters-15-to-24}
+letters_15_24 <- letters[15:24]
+letters_15_24
+```
+
+## 2. Average Temperatures in Philippine Cities
+
+### a. Create a character vector for the cities
+
+```{r city-vector}
+city <- c("Tuguegarao City", "Manila", "Iloilo City", 
+          "Tacloban", "Samal Island", "Davao City")
+city
+```
+
+### b. Create a vector for temperatures
+
+```{r temp-vector}
+temp <- c(42, 39, 34, 34, 30, 27)
+temp
+```
+
+### c. Create a dataframe to combine city and temp
+
+```{r create-dataframe}
+city_temp_df <- data.frame(city, temp)
+city_temp_df
+```
+
+### d. Name the columns using names() function
+
+```{r rename-columns}
+names(city_temp_df) <- c("City", "Temperature")
+city_temp_df
+```
+
+### e. Print the structure using str() function
+
+```{r structure}
+str(city_temp_df)
+```
+
+**Description of output:** The `str()` function displays the structure of the dataframe. It shows that `city_temp_df` is a data frame with 6 observations (rows) and 2 variables (columns). The `City` column is a character type with 6 entries, and the `Temperature` column is numeric with 6 values. This gives us a compact view of the data types and dimensions.
+
+### f. Display the content of row 3 and row 4
+
+```{r rows-3-4}
+city_temp_df[3:4, ]
+```
+
+### g. Display the city with highest and lowest temperature
+
+```{r highest-lowest-temp}
+# City with highest temperature
+highest_temp <- city_temp_df[which.max(city_temp_df$Temperature), ]
+cat("City with highest temperature:\n")
+print(highest_temp)
+
+# City with lowest temperature
+lowest_temp <- city_temp_df[which.min(city_temp_df$Temperature), ]
+cat("\nCity with lowest temperature:\n")
+print(lowest_temp)
+```
+
+\newpage
+
+# Using Matrices
+
+## 2. Create a matrix with specific values
+
+### a. Create matrix of 1 to 8 and 11 to 14 with 4 columns and 3 rows
+
+```{r create-matrix}
+matrix_data <- matrix(c(1:8, 11:14), nrow = 3, ncol = 4)
+matrix_data
+```
+
+### b. Multiply the matrix by two
+
+```{r multiply-matrix}
+multiplied_matrix <- matrix_data * 2
+multiplied_matrix
+```
+
+### c. Display the content of row 2
+
+```{r row-2}
+matrix_data[2, ]
+```
+
+### d. Display columns 3 and 4 in rows 1 and 2
+
+```{r cols-3-4-rows-1-2}
+matrix_data[1:2, 3:4]
+```
+
+### e. Display only columns 2 and 3, row 3
+
+```{r cols-2-3-row-3}
+matrix_data[3, 2:3]
+```
+
+### f. Display only column 4
+
+```{r col-4}
+matrix_data[, 4]
+```
+
+### g. Name the rows and columns
+
+```{r name-rows-cols}
+dimnames(multiplied_matrix) <- list(
+  c("isa", "dalawa", "tatlo"),
+  c("uno", "dos", "tres", "quatro")
+)
+multiplied_matrix
+```
+
+### h. Reshape the matrix to 2 columns and 6 rows
+
+```{r reshape-matrix}
+dim(matrix_data) <- c(6, 2)
+matrix_data
+```
+
+\newpage
+
+# Using Arrays
+
+## 3. Create an array with specific values
+
+### a. Create a three-dimensional array
+
+```{r create-array}
+array_values <- c(1, 2, 3, 6, 7, 8, 9, 0, 3, 4, 5, 1)
+repeated_values <- rep(array_values, each = 2)
+three_dim_array <- array(repeated_values, dim = c(2, 4, 3))
+three_dim_array
+```
+
+### b. How many dimensions does your array have?
+
+```{r array-dimensions}
+num_dimensions <- length(dim(three_dim_array))
+cat("Number of dimensions:", num_dimensions)
+```
+
+The array has **3 dimensions**.
+
+### c. Name the rows, columns, and dimensions
+
+```{r name-array}
+dimnames(three_dim_array) <- list(
+  c("a", "b"),                                    # row names (lowercase)
+  c("A", "B", "C", "D"),                          # column names (uppercase)
+  c("1st-Dimensional Array", 
+    "2nd-Dimensional Array", 
+    "3rd-Dimensional Array")                      # dimension names
+)
+three_dim_array
+```
