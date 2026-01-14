@@ -1,0 +1,308 @@
+
+## Including Plots
+# Data Frames and Analysis
+
+## 1. Shoe Size and Height Data
+
+### a. Create a data frame and describe the data
+
+```{r shoe-height-data}
+# Create the data frame
+shoe_data <- data.frame(
+  Shoe_Size = c(6.5, 9.0, 8.5, 8.5, 10.5, 7.0, 9.5, 9.0, 13.0, 
+                7.5, 10.5, 8.5, 12.0, 10.5, 13.0, 11.5, 8.5, 5.0, 
+                10.0, 6.5, 7.5, 8.5, 10.5, 8.5, 10.5, 11.0, 9.0, 13.0),
+  Height = c(66.0, 68.0, 64.5, 65.0, 70.0, 64.0, 70.0, 71.0, 72.0,
+             64.0, 74.5, 67.0, 71.0, 71.0, 77.0, 72.0, 59.0, 62.0,
+             72.0, 66.0, 64.0, 67.0, 73.0, 69.0, 72.0, 70.0, 69.0, 70.0),
+  Gender = c("F", "F", "F", "F", "M", "F", "F", "F", "M", "F", "M", 
+             "F", "M", "M", "M", "M", "F", "F", "M", "F", "F", "M", 
+             "M", "F", "M", "M", "M", "M")
+)
+
+cat("Data Description:\n")
+str(shoe_data)
+summary(shoe_data)
+```
+
+**Description:** The data frame contains 28 observations with 3 variables: Shoe_Size (numeric), Height (numeric), and Gender (character). The data represents shoe sizes ranging from 5.0 to 13.0, heights from 59.0 to 77.0 inches, and includes both male and female respondents.
+
+### b. Create subset by males and females
+
+```{r subset-by-gender}
+# Subset for males
+males_data <- shoe_data[shoe_data$Gender == "M", c("Shoe_Size", "Height")]
+cat("Males - Shoe Size and Height:\n")
+print(males_data)
+
+# Subset for females
+females_data <- shoe_data[shoe_data$Gender == "F", c("Shoe_Size", "Height")]
+cat("\nFemales - Shoe Size and Height:\n")
+print(females_data)
+```
+
+### c. Find the mean of shoe size and height
+
+```{r mean-shoe-height}
+mean_shoe_size <- mean(shoe_data$Shoe_Size)
+mean_height <- mean(shoe_data$Height)
+
+cat("Mean Shoe Size:", mean_shoe_size, "\n")
+cat("Mean Height:", mean_height, "inches\n")
+```
+
+### d. Relationship between shoe size and height
+
+```{r relationship-analysis}
+# Calculate correlation
+correlation <- cor(shoe_data$Shoe_Size, shoe_data$Height)
+cat("Correlation coefficient:", correlation, "\n")
+
+# Create a simple scatter plot representation
+plot(shoe_data$Shoe_Size, shoe_data$Height, 
+     main = "Relationship between Shoe Size and Height",
+     xlab = "Shoe Size", ylab = "Height (inches)",
+     pch = 19, col = ifelse(shoe_data$Gender == "M", "blue", "pink"))
+legend("bottomright", legend = c("Male", "Female"), 
+       col = c("blue", "pink"), pch = 19)
+```
+
+**Answer:** Yes, there is a positive relationship between shoe size and height. The correlation coefficient of `r round(correlation, 3)` indicates a strong positive correlation. This means that generally, as shoe size increases, height tends to increase as well. This relationship is biologically logical since taller individuals typically have larger feet to support their body frame.
+
+\newpage
+
+# Working with Factors
+
+## 2. Create factor for months
+
+```{r months-factor}
+months_vector <- c("March", "April", "January", "November", "January",
+                   "September", "October", "September", "November", "August",
+                   "January", "November", "November", "February", "May", "August",
+                   "July", "December", "August", "August", "September", "November",
+                   "February", "April")
+
+factor_months_vector <- factor(months_vector)
+print(factor_months_vector)
+```
+
+## 3. Compare summary of months_vector and factor_months_vector
+
+```{r compare-summaries}
+cat("Summary of months_vector (character):\n")
+summary(months_vector)
+
+cat("\n\nSummary of factor_months_vector (factor):\n")
+summary(factor_months_vector)
+```
+
+**Interpretation:** 
+
+- The `months_vector` (character vector) summary only shows the length, class, and mode, which is not very informative for categorical data.
+- The `factor_months_vector` summary provides a frequency count of each month, showing how many times each month appears in the data.
+- The factor version is much more useful in this case because it gives us meaningful insights into the distribution of months, making it easy to see that November appears most frequently (4 times), followed by August, January, and September (3 times each).
+
+## 4. Create vector and factor for directions
+
+```{r direction-factor}
+direction <- c("East", "West", "North")
+frequency <- c(1, 4, 3)
+
+# Create factor with specified order
+factor_data <- factor(direction, levels = c("East", "West", "North"))
+print(factor_data)
+
+# Display with frequency
+direction_table <- data.frame(Direction = factor_data, Frequency = frequency)
+print(direction_table)
+
+# Apply new order
+new_order_data <- factor(factor_data, levels = c("East", "West", "North"))
+print(new_order_data)
+```
+
+\newpage
+
+## 5. Import Excel data
+
+### Create and save the CSV file first
+
+```{r create-csv-file}
+# Create the data
+import_data <- data.frame(
+  Student_Number = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
+  Pre_Test = c(55, 54, 47, 57, 51, 61, 57, 54, 63, 58),
+  Post_Test = c(61, 60, 56, 63, 56, 63, 59, 62, 69, 63)
+)
+
+# Save as CSV
+write.csv(import_data, file = "import_march.csv", row.names = FALSE)
+cat("CSV file created successfully!\n")
+```
+
+### a. Import the excel file using read.table()
+
+```{r import-data}
+imported_data <- read.table("import_march.csv", header = TRUE, sep = ",")
+cat("Data imported successfully!\n")
+```
+
+### b. View the dataset
+
+```{r view-imported-data}
+print(imported_data)
+str(imported_data)
+```
+
+\newpage
+
+# Using Conditional Statements (IF-ELSE)
+
+## 6. Full Search - Random Number Selection
+
+```{r full-search}
+# Function to check selected number
+check_number <- function(selected_num) {
+  if (selected_num < 1 || selected_num > 50) {
+    return("The number selected is beyond the range of 1 to 50")
+  } else if (selected_num == 20) {
+    return("TRUE")
+  } else {
+    return(selected_num)
+  }
+}
+
+# Test with different numbers
+cat("Testing with number 20:\n")
+print(check_number(20))
+
+cat("\nTesting with number 35:\n")
+print(check_number(35))
+
+cat("\nTesting with number 60:\n")
+print(check_number(60))
+
+cat("\nTesting with number 0:\n")
+print(check_number(0))
+```
+
+## 7. Minimum Bills Calculator
+
+```{r minimum-bills}
+# Function to calculate minimum number of bills
+minimum_bills <- function(price) {
+  bills <- c(1000, 500, 200, 100, 50)
+  bill_count <- 0
+  remaining <- price
+  
+  cat("Price of snack:", price, "pesos\n")
+  cat("Bills breakdown:\n")
+  
+  for (bill in bills) {
+    if (remaining >= bill) {
+      num_bills <- remaining %/% bill
+      bill_count <- bill_count + num_bills
+      cat(bill, "peso bill(s):", num_bills, "\n")
+      remaining <- remaining %% bill
+    }
+  }
+  
+  cat("\nMinimum number of bills needed:", bill_count, "\n")
+  return(bill_count)
+}
+
+# Test examples
+cat("Example 1:\n")
+minimum_bills(350)
+
+cat("\n\nExample 2:\n")
+minimum_bills(1750)
+
+cat("\n\nExample 3:\n")
+minimum_bills(650)
+```
+
+\newpage
+
+## 8. Student Math Scores Analysis
+
+### a. Create dataframe from the table
+
+```{r student-grades}
+students_df <- data.frame(
+  Name = c("Annie", "Thea", "Steve", "Hanna"),
+  Grade1 = c(85, 65, 75, 95),
+  Grade2 = c(65, 75, 55, 75),
+  Grade3 = c(85, 90, 80, 100),
+  Grade4 = c(100, 90, 85, 90)
+)
+
+print(students_df)
+```
+
+### b. Output average score of students with average > 90
+
+```{r average-over-90}
+# Calculate average for each student without rowMeans
+for (i in 1:nrow(students_df)) {
+  total <- students_df[i, 2] + students_df[i, 3] + 
+           students_df[i, 4] + students_df[i, 5]
+  average <- total / 4
+  
+  if (average > 90) {
+    cat(students_df$Name[i], "'s average grade this semester is", 
+        average, "\n")
+  }
+}
+```
+
+### c. Output tests with average score < 80
+
+```{r test-difficulty}
+# Calculate average for each test without mean function
+for (test in 2:5) {
+  total <- 0
+  for (i in 1:nrow(students_df)) {
+    total <- total + students_df[i, test]
+  }
+  average <- total / nrow(students_df)
+  
+  if (average < 80) {
+    test_number <- test - 1
+    cat("The", test_number, "test was difficult.\n")
+  }
+}
+```
+
+### d. Output students with highest grade > 90
+
+```{r highest-grade}
+# Find highest grade for each student without max function
+for (i in 1:nrow(students_df)) {
+  highest <- students_df[i, 2]
+  
+  # Check each grade
+  if (students_df[i, 3] > highest) {
+    highest <- students_df[i, 3]
+  }
+  if (students_df[i, 4] > highest) {
+    highest <- students_df[i, 4]
+  }
+  if (students_df[i, 5] > highest) {
+    highest <- students_df[i, 5]
+  }
+  
+  if (highest > 90) {
+    cat(students_df$Name[i], "'s highest grade this semester is", 
+        highest, "\n")
+  }
+}
+```
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+
